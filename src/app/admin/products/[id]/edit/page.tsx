@@ -391,7 +391,7 @@ export default function EditProductPage() {
         <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-5">
           <h3 className="text-sm font-semibold text-gray-900 tracking-wider uppercase">Product Images</h3>
 
-          <div className="flex gap-3">
+          <div className="flex flex-col sm:flex-row gap-3">
             <div className="flex-1">
               <label className={labelClass}>Upload Images</label>
               <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-[#C9A84C] transition-colors">
@@ -494,17 +494,17 @@ export default function EditProductPage() {
           </p>
         )}
 
-        <div className="flex gap-3">
+        <div className="flex flex-col sm:flex-row gap-3">
           <Link
             href="/admin/products"
-            className="px-6 py-3 text-sm font-medium border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+            className="w-full sm:w-auto px-6 py-3 text-sm font-medium border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors text-center"
           >
             Cancel
           </Link>
           <button
             type="submit"
             disabled={saving}
-            className="px-8 py-3 bg-[#C9A84C] text-white text-sm font-semibold rounded-lg hover:bg-[#C9A84C]/90 transition-colors disabled:opacity-50"
+            className="w-full sm:w-auto px-8 py-3 bg-[#C9A84C] text-white text-sm font-semibold rounded-lg hover:bg-[#C9A84C]/90 transition-colors disabled:opacity-50"
           >
             {saving ? 'Saving...' : 'Update Product'}
           </button>

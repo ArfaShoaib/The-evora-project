@@ -273,6 +273,7 @@ export default function AdminDashboard() {
               <Link href="/admin/orders" className="text-sm text-[#C9A84C] hover:text-[#C9A84C]/80 font-medium">View all</Link>
             </CardHeader>
             <CardContent>
+              <div className="overflow-x-auto">
               <Table>
                 <TableHeader>
                   <TableRow>
@@ -295,6 +296,7 @@ export default function AdminDashboard() {
                   ))}
                 </TableBody>
               </Table>
+              </div>
             </CardContent>
           </Card>
         </div>

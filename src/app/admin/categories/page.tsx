@@ -395,7 +395,7 @@ export default function CategoriesPage() {
                       {/* Subcategory form */}
                       {showSubForm && (
                         <div className="mx-6 mb-4 bg-white rounded-lg border border-gray-200 p-4 space-y-3">
-                          <div className="flex items-center justify-between">
+<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                             <h4 className="text-xs font-semibold text-gray-700 tracking-wider uppercase">
                               {editSubId ? 'Edit Subcategory' : 'New Subcategory'}
                             </h4>
@@ -497,6 +497,7 @@ export default function CategoriesPage() {
                       {subs.length === 0 && !showSubForm ? (
                         <p className="px-6 pb-4 text-xs text-gray-400 italic">No subcategories yet.</p>
                       ) : (
+                        <div className="overflow-x-auto">
                         <Table>
                           <TableHeader>
                             <TableRow>
@@ -540,6 +541,7 @@ export default function CategoriesPage() {
                             ))}
                           </TableBody>
                         </Table>
+                        </div>
                       )}
                     </div>
                   )}

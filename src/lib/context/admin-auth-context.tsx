@@ -29,17 +29,25 @@ function getAdminUserFromCookie(): AdminUser | null {
 
   try {
     const session = JSON.parse(decodeURIComponent(match[1]));
-    if (!session?.access_token) return null;
 
-    // Decode JWT payload (base64url) to get user id + email
-    const payload = JSON.parse(
-      atob(session.access_token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/'))
-    );
+    // Get email: prefer _admin_email stored in session, fallback to JWT, fallback to admin_email cookie
+    let email = session?._admin_email || '';
+    if (!email && session?.access_token) {
+      const payload = JSON.parse(
+        atob(session.access_token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/'))
+      );
+      email = payload.email ?? '';
+    }
+    if (!email) {
+      const emailMatch = document.cookie.match(/admin_email=([^;]+)/);
+      email = emailMatch ? decodeURIComponent(emailMatch[1]) : '';
+    }
 
-    return {
-      id: payload.sub,
-      email: payload.email ?? '',
-    };
+    const id = session?.access_token
+      ? JSON.parse(atob(session.access_token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/'))).sub
+      : '';
+
+    return { id, email };
   } catch {
     return null;
   }

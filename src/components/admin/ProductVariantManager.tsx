@@ -409,6 +409,7 @@ export function ProductVariantManager({
       {/* Variants table */}
       {variants.length > 0 && (
         <div className="border border-gray-200 rounded-lg overflow-hidden">
+          <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="bg-gray-50 text-left">
@@ -526,6 +527,7 @@ export function ProductVariantManager({
               })}
             </tbody>
           </table>
+          </div>
         </div>
       )}
     </div>

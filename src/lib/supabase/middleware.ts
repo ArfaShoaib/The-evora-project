@@ -96,6 +96,23 @@ export async function updateSession(request: NextRequest) {
     }
 
     // ── Storefront routes: use regular Supabase session ──────────────────────
+    // Block admin accounts from accessing storefront
+    if (user && !isAdminRoute && !isAuthRoute) {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('role')
+        .eq('id', user.id)
+        .single();
+
+      if (profile?.role === 'admin') {
+        // Clear session and redirect to admin login
+        const redirectResponse = NextResponse.redirect(new URL('/admin/login', request.url));
+        transferCookies(supabaseResponse, redirectResponse);
+        redirectResponse.cookies.delete('admin_session');
+        return redirectResponse;
+      }
+    }
+
     if (isAccountRoute && !user) {
       url.pathname = '/auth/login';
       const redirectResponse = NextResponse.redirect(url);

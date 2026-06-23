@@ -89,7 +89,7 @@ export function ReviewSection({ productId, onReviewsLoaded }: ReviewSectionProps
 
   return (
     <div className="mt-16 sm:mt-24">
-      <h2 className="font-serif text-2xl sm:text-3xl font-bold text-foreground mb-8">
+      <h2 className="font-serif text-3xl sm:text-4xl font-bold text-foreground mb-8">
         Customer Reviews
       </h2>
 
@@ -241,7 +241,7 @@ export function ReviewSection({ productId, onReviewsLoaded }: ReviewSectionProps
                 <LogIn className="size-6 text-gold" />
               </div>
 
-              <h3 className="font-serif text-xl font-bold text-gray-900 mb-2">
+              <h3 className="font-serif text-xl font-bold text-foreground mb-2">
                 Sign In Required
               </h3>
               <p className="text-sm text-gray-500 leading-relaxed mb-8">

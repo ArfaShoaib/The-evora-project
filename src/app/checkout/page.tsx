@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/lib/context/cart-context";
 import { useProductsByIds } from "@/lib/hooks/use-products-by-ids";
@@ -87,7 +88,9 @@ export default function CheckoutPage() {
   }, []);
 
   const productIds = React.useMemo(() => items.map((i) => i.productId), [items]);
-  const { products } = useProductsByIds(productIds);
+  const { products, loading } = useProductsByIds(productIds);
+
+  const isLoading = loading || (items.length > 0 && products.length === 0);
 
   const cartProducts = items
     .map((item) => {
@@ -124,7 +127,7 @@ export default function CheckoutPage() {
       const res = await fetch("/api/validate-coupon", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ code: couponCode.trim(), cart_total: subtotal }),
+        body: JSON.stringify({ code: couponCode.trim(), cart_total: subtotal, customer_email: shippingData.email || undefined }),
       });
       const data = await res.json();
 
@@ -221,7 +224,7 @@ export default function CheckoutPage() {
         discount_amount: appliedCoupon?.discount_amount,
       };
 
-      await createOrder(orderData);
+      const result = await createOrder(orderData);
 
       // Increment coupon usage after successful order
       if (appliedCoupon?.coupon_id) {
@@ -233,7 +236,7 @@ export default function CheckoutPage() {
       }
 
       clearCart();
-      router.push("/account?tab=orders");
+      router.push(`/order-confirmation?order=${result.orderNumber}`);
     } catch (error) {
       console.error("Failed to place order:", error);
     } finally {
@@ -241,21 +244,58 @@ export default function CheckoutPage() {
     }
   };
 
+  if (isLoading) {
+    return (
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        <div className="h-10 w-32 bg-muted animate-pulse rounded mb-8 sm:mb-12" />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
+          <div className="lg:col-span-2 flex flex-col gap-10">
+            {[1, 2].map((i) => (
+              <div key={i} className="flex flex-col gap-4">
+                <div className="h-5 w-40 bg-muted animate-pulse rounded" />
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {[1, 2, 3, 4].map((j) => (
+                    <div key={j} className="flex flex-col gap-2">
+                      <div className="h-3 w-16 bg-muted animate-pulse rounded" />
+                      <div className="h-10 w-full bg-muted animate-pulse rounded" />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="bg-muted/30 p-6 animate-pulse rounded">
+            <div className="h-5 w-28 bg-muted rounded mb-6" />
+            <div className="flex flex-col gap-3">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="flex justify-between">
+                  <div className="h-4 w-20 bg-muted rounded" />
+                  <div className="h-4 w-16 bg-muted rounded" />
+                </div>
+              ))}
+            </div>
+            <div className="h-13 w-full bg-muted rounded mt-6" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (cartProducts.length === 0) {
     return (
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-24 text-center">
-        <h1 className="font-serif text-3xl font-bold text-foreground mb-4">
+        <h1 className="font-serif text-3xl sm:text-4xl font-bold text-foreground mb-4">
           Your cart is empty
         </h1>
         <p className="text-muted-foreground mb-8">
           Add some items to your cart before checking out.
         </p>
-        <a
+        <Link
           href="/shop"
           className="inline-flex items-center justify-center h-13 px-8 bg-foreground text-background text-xs font-semibold tracking-[0.2em] uppercase hover:bg-gold hover:text-foreground transition-colors"
         >
           Browse Shop
-        </a>
+        </Link>
       </div>
     );
   }

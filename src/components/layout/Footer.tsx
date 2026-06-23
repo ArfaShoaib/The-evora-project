@@ -37,7 +37,6 @@ const FOOTER_LINKS = {
     { name: "Privacy Policy", href: "/privacy-policy" },
     { name: "Terms & Conditions", href: "/terms" },
     { name: "Store Directory", href: "/stores" },
-    { name: "Corporate Info", href: "/about" },
   ],
 };
 
@@ -165,7 +164,7 @@ export function Footer() {
           {/* Directory Links */}
           <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 lg:col-span-5">
             <div>
-              <h3 className="text-xs tracking-[0.2em] font-semibold text-white uppercase mb-6 font-serif">
+              <h3 className="text-xs tracking-[0.2em] font-semibold text-[#D4AF37] uppercase mb-6 font-serif">
                 Shop
               </h3>
               <ul className="flex flex-col gap-4 text-sm">
@@ -179,7 +178,7 @@ export function Footer() {
               </ul>
             </div>
             <div>
-              <h3 className="text-xs tracking-[0.2em] font-semibold text-white uppercase mb-6 font-serif">
+              <h3 className="text-xs tracking-[0.2em] font-semibold text-[#D4AF37] uppercase mb-6 font-serif">
                 Support
               </h3>
               <ul className="flex flex-col gap-4 text-sm">
@@ -193,7 +192,7 @@ export function Footer() {
               </ul>
             </div>
             <div className="col-span-2 sm:col-span-1">
-              <h3 className="text-xs tracking-[0.2em] font-semibold text-white uppercase mb-6 font-serif">
+              <h3 className="text-xs tracking-[0.2em] font-semibold text-[#D4AF37] uppercase mb-6 font-serif">
                 About
               </h3>
               <ul className="flex flex-col gap-4 text-sm">

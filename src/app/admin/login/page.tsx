@@ -42,7 +42,7 @@ export default function AdminLoginPage() {
   return (
     <div className="min-h-screen bg-[#F8F8F8] flex items-center justify-center px-4">
       <div className="w-full max-w-md">
-        <div className={`bg-white rounded-xl shadow-xl p-8 ${shake ? 'animate-shake' : ''}`}>
+        <div className={`bg-white rounded-xl shadow-xl p-6 sm:p-8 ${shake ? 'animate-shake' : ''}`}>
           <div className="text-center mb-8">
             <Link href="/" className="font-serif text-3xl font-bold tracking-[0.2em] text-[#C9A84C]">EVORA</Link>
             <p className="text-sm text-gray-500 mt-2 tracking-widest uppercase">Admin Panel</p>

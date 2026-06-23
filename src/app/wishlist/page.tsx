@@ -25,7 +25,7 @@ export default function WishlistPage() {
         <div className="size-20 mx-auto mb-6 rounded-full bg-muted flex items-center justify-center">
           <Heart className="size-10 text-muted-foreground" />
         </div>
-        <h1 className="font-serif text-3xl font-bold text-foreground mb-4">
+        <h1 className="font-serif text-3xl sm:text-4xl font-bold text-foreground mb-4">
           Your wishlist is empty
         </h1>
         <p className="text-muted-foreground mb-8 max-w-md mx-auto">

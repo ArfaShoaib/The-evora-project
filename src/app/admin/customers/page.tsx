@@ -37,7 +37,7 @@ export default function CustomersPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <h2 className="text-2xl font-bold text-[#0A0A0A]">Customers</h2>
           <p className="text-sm text-gray-500 mt-1">{customers.length} total customers</p>
@@ -64,6 +64,7 @@ export default function CustomersPage() {
       ) : (
         <Card>
           <CardContent className="p-0">
+            <div className="overflow-x-auto">
             <Table>
               <TableHeader>
                 <TableRow>
@@ -100,6 +101,7 @@ export default function CustomersPage() {
                 ))}
               </TableBody>
             </Table>
+            </div>
           </CardContent>
         </Card>
       )}

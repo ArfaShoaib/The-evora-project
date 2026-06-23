@@ -51,7 +51,7 @@ export function FaqPageClient({ data }: { data: FaqPageData }) {
     <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
       <div className="text-center mb-12">
         <div className="w-16 h-0.5 bg-gold mx-auto mb-6" />
-        <h1 className="font-serif text-4xl sm:text-5xl font-bold text-foreground mb-4">
+        <h1 className="font-serif text-3xl sm:text-4xl font-bold text-foreground mb-4">
           {data.title}
         </h1>
         <p className="text-muted-foreground">{data.subtitle}</p>

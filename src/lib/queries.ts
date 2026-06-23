@@ -205,6 +205,10 @@ export async function getFilteredProducts(filters: ProductFilters): Promise<Prod
 
   if (error || !data) return [];
 
+  if (!subMap) {
+    subMap = await getSubcategoryCategoryMap();
+  }
+
   let products = data.map((row) => mapProduct(row, undefined, undefined, subMap));
 
   // Price range filter

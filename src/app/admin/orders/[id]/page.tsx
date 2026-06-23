@@ -406,6 +406,7 @@ export default function OrderDetailPage() {
           <CardTitle className="text-base">Order Items</CardTitle>
         </CardHeader>
         <CardContent>
+          <div className="overflow-x-auto">
           <Table>
             <TableHeader>
               <TableRow>
@@ -447,6 +448,7 @@ export default function OrderDetailPage() {
               ))}
             </TableBody>
           </Table>
+          </div>
 
           {/* Totals */}
           <div className="mt-6 space-y-2 max-w-xs ml-auto">

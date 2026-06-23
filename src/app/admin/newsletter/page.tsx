@@ -75,7 +75,7 @@ export default function NewsletterPage() {
         </div>
       )}
 
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <h2 className="text-2xl font-bold text-[#0A0A0A]">Newsletter Subscribers</h2>
           <p className="text-sm text-gray-500 mt-1">{subscribers.length} subscribers</p>
@@ -92,6 +92,7 @@ export default function NewsletterPage() {
 
       <Card>
         <CardContent className="p-0">
+          <div className="overflow-x-auto">
           <Table>
             <TableHeader>
               <TableRow>
@@ -136,6 +137,7 @@ export default function NewsletterPage() {
               )}
             </TableBody>
           </Table>
+          </div>
         </CardContent>
       </Card>
 

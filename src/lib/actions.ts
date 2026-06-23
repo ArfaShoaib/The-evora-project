@@ -178,7 +178,6 @@ export async function createOrder(orderData: {
 }) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) throw new Error('Not authenticated');
 
   const total_price = orderData.items.reduce(
     (sum, item) => sum + item.price * item.quantity,
@@ -188,7 +187,7 @@ export async function createOrder(orderData: {
   const { data: order, error: orderError } = await supabase
     .from('orders')
     .insert({
-      user_id: user.id,
+      user_id: user?.id || null,
       customer_email: orderData.customer_email || null,
       total_price,
       shipping_address: orderData.shipping_address as Json,
@@ -214,7 +213,7 @@ export async function createOrder(orderData: {
   const { error: itemsError } = await supabase.from('order_items').insert(orderItems);
   if (itemsError) throw itemsError.message;
 
-  return { orderId: order.id };
+  return { orderId: order.id, orderNumber: order.order_number as string };
 }
 
 // ─── Profile ─────────────────────────────────────────────────────────────────

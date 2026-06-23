@@ -148,6 +148,7 @@ export default function RefundsPage() {
             <p className="text-gray-500 text-sm">No refund requests found</p>
           </div>
         ) : (
+          <div className="overflow-x-auto">
           <Table>
             <TableHeader>
               <TableRow>
@@ -192,6 +193,7 @@ export default function RefundsPage() {
               ))}
             </TableBody>
           </Table>
+          </div>
         )}
       </div>
 

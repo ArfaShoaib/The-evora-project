@@ -45,7 +45,7 @@ export default async function AboutPage() {
       {/* Hero */}
       <div className="max-w-3xl mx-auto text-center mb-16 sm:mb-24">
         <div className="w-16 h-0.5 bg-gold mx-auto mb-6" />
-        <h1 className="font-serif text-4xl sm:text-5xl font-bold text-foreground mb-6">
+        <h1 className="font-serif text-3xl sm:text-4xl font-bold text-foreground mb-6">
           {title}
         </h1>
         <p className="text-lg text-muted-foreground leading-relaxed">
@@ -75,7 +75,7 @@ export default async function AboutPage() {
           )}
         </div>
         <div className="flex flex-col gap-6">
-          <h2 className="font-serif text-3xl font-bold text-foreground">{missionTitle}</h2>
+          <h2 className="font-serif text-3xl sm:text-4xl font-bold text-foreground">{missionTitle}</h2>
           <p className="text-muted-foreground leading-relaxed">
             {mission}
           </p>
@@ -99,7 +99,7 @@ export default async function AboutPage() {
 
       {/* Team */}
       <div className="max-w-3xl mx-auto text-center">
-        <h2 className="font-serif text-3xl font-bold text-foreground mb-6">
+        <h2 className="font-serif text-3xl sm:text-4xl font-bold text-foreground mb-6">
           {teamTitle}
         </h2>
         <p className="text-muted-foreground leading-relaxed mb-12">

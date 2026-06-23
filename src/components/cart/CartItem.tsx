@@ -44,7 +44,7 @@ export function CartItem({
         <div>
           <div className="flex items-start justify-between gap-4">
             <div>
-              <h3 className="text-sm font-medium text-foreground line-clamp-1">
+              <h3 className="text-sm font-medium text-[#D4AF37] line-clamp-1">
                 {product.name}
               </h3>
               <p className="mt-1 text-xs text-muted-foreground uppercase tracking-wider">
@@ -66,21 +66,21 @@ export function CartItem({
 
         {/* Quantity + Remove */}
         <div className="flex items-center justify-between mt-4">
-          <div className="inline-flex items-center border border-border">
+          <div className="inline-flex items-center border border-border rounded-md overflow-hidden">
             <button
               onClick={() => onUpdateQuantity?.(Math.max(1, quantity - 1))}
               disabled={quantity <= 1}
-              className="size-9 flex items-center justify-center text-muted-foreground hover:text-foreground disabled:opacity-30 transition-colors"
+              className="size-9 flex items-center justify-center text-foreground hover:bg-muted disabled:opacity-30 transition-colors"
               aria-label="Decrease quantity"
             >
               <Minus className="size-3" />
             </button>
-            <span className="w-10 text-center text-sm font-medium text-foreground">
+            <span className="w-10 text-center text-sm font-semibold text-foreground border-x border-border">
               {quantity}
             </span>
             <button
               onClick={() => onUpdateQuantity?.(quantity + 1)}
-              className="size-9 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
+              className="size-9 flex items-center justify-center text-foreground hover:bg-muted transition-colors"
               aria-label="Increase quantity"
             >
               <Plus className="size-3" />

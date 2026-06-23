@@ -65,12 +65,15 @@ function SearchOverlay({
   const [loading, setLoading] = React.useState(false);
   const debounceRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  const handleClose = React.useCallback(() => {
+    setQuery("");
+    setResults([]);
+    onClose();
+  }, [onClose]);
+
   React.useEffect(() => {
     if (isOpen) {
       setTimeout(() => inputRef.current?.focus(), 100);
-    } else {
-      setQuery("");
-      setResults([]);
     }
   }, [isOpen]);
 
@@ -79,22 +82,22 @@ function SearchOverlay({
     if (!isOpen) return;
     const handleClickOutside = (e: MouseEvent) => {
       if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
-        onClose();
+        handleClose();
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [isOpen, onClose]);
+  }, [isOpen, handleClose]);
 
   // Escape key to close
   React.useEffect(() => {
     if (!isOpen) return;
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") handleClose();
     };
     document.addEventListener("keydown", handleEscape);
     return () => document.removeEventListener("keydown", handleEscape);
-  }, [isOpen, onClose]);
+  }, [isOpen, handleClose]);
 
   // Debounced search
   const handleSearchChange = (value: string) => {
@@ -120,14 +123,14 @@ function SearchOverlay({
   };
 
   const handleProductClick = (slug: string) => {
-    onClose();
+    handleClose();
     router.push(`/product/${slug}`);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (query.trim()) {
-      onClose();
+      handleClose();
       router.push(`/shop?search=${encodeURIComponent(query.trim())}`);
     }
   };
@@ -158,7 +161,7 @@ function SearchOverlay({
               />
               <button
                 type="button"
-                onClick={onClose}
+                onClick={handleClose}
                 className="p-2 text-white/50 hover:text-white transition-colors"
                 aria-label="Close search"
               >
@@ -316,7 +319,7 @@ function CartDrawer({
                       <Link
                         href={`/product/${product?.slug || item.productId}`}
                         onClick={onClose}
-                        className="text-sm font-medium text-foreground hover:text-[#D4AF37] transition-colors truncate block"
+                        className="text-sm font-medium text-[#D4AF37] truncate block"
                       >
                         {product?.name || "Product"}
                       </Link>
@@ -340,7 +343,7 @@ function CartDrawer({
                           >
                             -
                           </button>
-                          <span className="px-2 text-xs font-medium">{item.quantity}</span>
+                          <span className="px-2 text-xs font-semibold text-white">{item.quantity}</span>
                           <button
                             onClick={() =>
                               updateQuantity(item.productId, item.quantity + 1)
@@ -364,12 +367,8 @@ function CartDrawer({
             </div>
           </div>
 
-          {/* Bottom: Subtotal + Buttons */}
+          {/* Bottom: Buttons */}
           <div className="border-t border-zinc-200 dark:border-zinc-800 pt-4 mt-4">
-            <div className="flex items-center justify-between mb-4">
-              <span className="text-sm font-medium text-zinc-600">Subtotal</span>
-              <span className="text-sm font-bold text-foreground">{formatPrice(subtotal)}</span>
-            </div>
             <div className="flex flex-col gap-2">
               <Link
                 href="/checkout"

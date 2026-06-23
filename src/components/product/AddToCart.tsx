@@ -59,20 +59,14 @@ export function AddToCart({ productId, stock, selectedSize, selectedColor, sizes
       </div>
 
       {/* Action Buttons */}
-      <div className="flex flex-col sm:flex-row gap-3">
+      <div>
         <button
           onClick={handleAddToBag}
           disabled={outOfStock}
-          className="flex-1 flex items-center justify-center gap-2 h-13 px-8 bg-[#D4AF37] text-black text-xs font-semibold tracking-[0.2em] uppercase hover:brightness-110 transition-all disabled:opacity-30 disabled:cursor-not-allowed rounded-md"
+          className="w-full flex items-center justify-center gap-2 h-13 px-8 bg-[#D4AF37] text-black text-xs font-semibold tracking-[0.2em] uppercase hover:brightness-110 transition-all disabled:opacity-30 disabled:cursor-not-allowed rounded-md"
         >
           <ShoppingBag className="size-4" />
           {outOfStock ? "Out of Stock" : "Add to Bag"}
-        </button>
-        <button
-          disabled={outOfStock}
-          className="flex-1 h-13 px-8 bg-white/80 backdrop-blur-sm text-black text-xs font-semibold tracking-[0.2em] uppercase hover:bg-white transition-all disabled:opacity-30 disabled:cursor-not-allowed rounded-md"
-        >
-          Buy Now
         </button>
       </div>
     </div>

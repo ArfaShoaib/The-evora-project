@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Heart, ShoppingBag, Eye } from "lucide-react";
+import { Heart, ShoppingBag } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { PriceDisplay } from "./PriceDisplay";
@@ -126,13 +126,6 @@ export function ProductCard({ product, className }: ProductCardProps) {
             >
               <Heart className={cn("size-4", isWishlisted && "fill-current")} />
             </button>
-            <Link
-              href={`/product/${product.slug}`}
-              className="shrink-0 flex items-center justify-center size-[36px] lg:size-[40px] rounded-lg border border-gray-200 text-foreground hover:border-gold hover:text-gold transition-all"
-              aria-label="Quick view"
-            >
-              <Eye className="size-4" />
-            </Link>
           </div>
         </div>
       </div>

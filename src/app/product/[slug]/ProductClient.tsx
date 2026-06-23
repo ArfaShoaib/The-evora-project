@@ -71,7 +71,7 @@ export function ProductClient({ product, breadcrumbItems }: ProductClientProps) 
   }, [hasVariants, product.variants, selectedSize, selectedColor, product.stock]);
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
       {/* Gallery */}
       <ImageGallery images={product.images} />
 

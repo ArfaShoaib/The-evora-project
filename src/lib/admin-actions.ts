@@ -1417,6 +1417,42 @@ export async function deleteNewsletterSubscriber(id: string) {
   return { success: true };
 }
 
+// ─── Admin Email Change (profile role swap) ──────────────────────────────────
+
+export async function updateAdminEmail(oldEmail: string, newEmail: string) {
+  const supabase = await createAdminClient();
+
+  // Set old email's profile role to customer
+  const { error: oldError } = await supabase
+    .from('profiles')
+    .update({ role: 'customer' })
+    .eq('email', oldEmail)
+    .eq('role', 'admin');
+
+  if (oldError) throw new Error('Failed to update old admin profile: ' + oldError.message);
+
+  // Upsert new email's profile with admin role
+  const { data: existingProfile } = await supabase
+    .from('profiles')
+    .select('id')
+    .eq('email', newEmail)
+    .single();
+
+  if (existingProfile) {
+    const { error: newError } = await supabase
+      .from('profiles')
+      .update({ role: 'admin' })
+      .eq('email', newEmail);
+
+    if (newError) throw new Error('Failed to set new admin role: ' + newError.message);
+  }
+  // If no profile exists for new email yet, the trigger will create it with 'customer'
+  // and admin will need to set it manually — but this is rare since the new email
+  // needs to sign up first anyway.
+
+  return { success: true };
+}
+
 // ─── Hero Banners CRUD ─────────────────────────────────────────────────────
 
 export type HeroBannerRow = Database['public']['Tables']['hero_banners']['Row'];

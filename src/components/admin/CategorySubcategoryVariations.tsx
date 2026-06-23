@@ -292,29 +292,32 @@ export function CategorySubcategoryVariations({
 
   // Fetch subcategories when parent category changes
   React.useEffect(() => {
-    if (!category) {
-      setSubcategories([]);
-      return;
-    }
-    // Find parent category ID by name
+    if (!category) return;
     const parent = parentCategories.find((c) => c.name === category);
     if (!parent) return;
 
-    setLoadingSubs(true);
+    let cancelled = false;
     const supabase = createClient();
-    supabase
-      .from('categories')
-      .select('id, name, slug, variation_fields')
-      .eq('parent_id', parent.id)
-      .order('name')
-      .then(({ data }) => {
+
+    (async () => {
+      setLoadingSubs(true);
+      const { data } = await supabase
+        .from('categories')
+        .select('id, name, slug, variation_fields')
+        .eq('parent_id', parent.id)
+        .order('name');
+      if (!cancelled) {
         if (data) setSubcategories(data as SubCategory[]);
         setLoadingSubs(false);
-      });
+      }
+    })();
+
+    return () => { cancelled = true; };
   }, [category, parentCategories]);
 
   // Find current subcategory's variation fields
-  const currentSub = subcategories.find((s) => s.name === subcategory);
+  const effectiveSubcategories = category ? subcategories : [];
+  const currentSub = effectiveSubcategories.find((s) => s.name === subcategory);
   const variationFields: VariationField[] = currentSub?.variation_fields
     ? (currentSub.variation_fields as string[])
     : [];
@@ -384,7 +387,7 @@ export function CategorySubcategoryVariations({
             disabled={!category || loadingSubs}
           >
             <option value="">{loadingSubs ? 'Loading...' : category ? 'Select subcategory' : 'Select category first'}</option>
-            {subcategories.map((sub) => (
+            {effectiveSubcategories.map((sub) => (
               <option key={sub.id} value={sub.name}>
                 {sub.name}
               </option>

@@ -49,7 +49,7 @@ export function RootLayoutClient({ children }: { children: React.ReactNode }) {
           <Footer />
         </WishlistProvider>
       </CartProvider>
-      <Toaster position="top-right" richColors />
+      <Toaster position="bottom-right" richColors />
     </CurrencyProvider>
   );
 }

@@ -84,6 +84,7 @@ export default function CustomerDetailPage() {
           {customer.orders.length === 0 ? (
             <p className="text-sm text-gray-500 text-center py-8">No orders yet</p>
           ) : (
+            <div className="overflow-x-auto">
             <Table>
               <TableHeader>
                 <TableRow>
@@ -108,6 +109,7 @@ export default function CustomerDetailPage() {
                 ))}
               </TableBody>
             </Table>
+            </div>
           )}
         </CardContent>
       </Card>

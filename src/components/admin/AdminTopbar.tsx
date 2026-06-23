@@ -25,7 +25,7 @@ export function AdminTopbar() {
   const title = Object.entries(pageTitles).find(([key]) => pathname.startsWith(key))?.[1] || 'Admin';
 
   return (
-    <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 shrink-0">
+    <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-4 sm:px-6 shrink-0">
       <h1 className="text-lg font-semibold text-[#0A0A0A]">{title}</h1>
       <div className="flex items-center gap-4">
         <div className="flex items-center gap-3">

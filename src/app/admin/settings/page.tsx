@@ -5,7 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAdminAuth } from '@/lib/context/admin-auth-context';
 import { createClient } from '@/lib/supabase/client';
 import { PasswordInput } from '@/components/ui/PasswordInput';
-import { getSiteSettings, updateSiteSettings } from '@/lib/admin-actions';
+import { getSiteSettings, updateSiteSettings, updateAdminEmail } from '@/lib/admin-actions';
+import { updateAdminSessionEmail } from '@/app/auth/actions';
 
 export default function SettingsPage() {
   const { user, loading: authLoading } = useAdminAuth();
@@ -94,13 +95,28 @@ export default function SettingsPage() {
       return;
     }
     setSaving(true);
+
+    // Step 1: Swap profile roles (old → customer, new → admin)
+    try {
+      await updateAdminEmail(user?.email || '', emailToSend);
+    } catch (err) {
+      setSaving(false);
+      showMessage('error', err instanceof Error ? err.message : 'Failed to update admin role.');
+      return;
+    }
+
+    // Step 2: Update auth email
     const supabase = createClient();
     const { error } = await supabase.auth.updateUser({ email: emailToSend });
     setSaving(false);
 
     if (error) {
+      // Rollback: swap roles back
+      try { await updateAdminEmail(emailToSend, user?.email || ''); } catch { /* ignore */ }
       showMessage('error', error.message);
     } else {
+      // Update admin_session cookie's _admin_email field
+      try { await updateAdminSessionEmail(emailToSend); } catch { /* ignore */ }
       showMessage('success', 'Verification email sent. Please check your inbox.');
       setEmailEdited(false);
       setNewEmail('');

@@ -73,11 +73,11 @@ function HeroEditor({ data, onChange }: { data: Record<string, unknown>; onChang
       <Input label="Tagline" value={(data.tagline as string) || ''} onChange={(v) => onChange({ ...data, tagline: v })} />
       <Input label="Title" value={(data.title as string) || ''} onChange={(v) => onChange({ ...data, title: v })} />
       <Textarea label="Description" value={(data.description as string) || ''} onChange={(v) => onChange({ ...data, description: v })} />
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <Input label="Primary CTA Text" value={(data.cta_primary_text as string) || ''} onChange={(v) => onChange({ ...data, cta_primary_text: v })} />
         <Input label="Primary CTA Link" value={(data.cta_primary_link as string) || ''} onChange={(v) => onChange({ ...data, cta_primary_link: v })} />
       </div>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <Input label="Secondary CTA Text" value={(data.cta_secondary_text as string) || ''} onChange={(v) => onChange({ ...data, cta_secondary_text: v })} />
         <Input label="Secondary CTA Link" value={(data.cta_secondary_link as string) || ''} onChange={(v) => onChange({ ...data, cta_secondary_link: v })} />
       </div>
@@ -96,7 +96,7 @@ function FlashSaleEditor({ data, onChange }: { data: Record<string, unknown>; on
       <Input label="Title" value={(data.title as string) || ''} onChange={(v) => onChange({ ...data, title: v })} placeholder="FLASH SALE" />
       <Input label="Subtitle" value={(data.subtitle as string) || ''} onChange={(v) => onChange({ ...data, subtitle: v })} placeholder="Up to 50% Off" />
       <Textarea label="Description" value={(data.description as string) || ''} onChange={(v) => onChange({ ...data, description: v })} placeholder="Limited time offer — don't miss out!" />
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <Input label="CTA Text" value={(data.cta_text as string) || ''} onChange={(v) => onChange({ ...data, cta_text: v })} placeholder="Shop Now" />
         <Input label="CTA Link" value={(data.cta_link as string) || ''} onChange={(v) => onChange({ ...data, cta_link: v })} placeholder="/sale" />
       </div>
@@ -113,7 +113,7 @@ function SaleBannerEditor({ data, onChange }: { data: Record<string, unknown>; o
       <Input label="Subtitle" value={(data.subtitle as string) || ''} onChange={(v) => onChange({ ...data, subtitle: v })} />
       <Input label="Title" value={(data.title as string) || ''} onChange={(v) => onChange({ ...data, title: v })} />
       <Textarea label="Description" value={(data.description as string) || ''} onChange={(v) => onChange({ ...data, description: v })} />
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <Input label="CTA Text" value={(data.cta_text as string) || ''} onChange={(v) => onChange({ ...data, cta_text: v })} />
         <Input label="CTA Link" value={(data.cta_link as string) || ''} onChange={(v) => onChange({ ...data, cta_link: v })} />
       </div>
@@ -128,11 +128,11 @@ function SeasonalEditor({ data, onChange }: { data: Record<string, unknown>; onC
       <Input label="Title" value={(data.title as string) || ''} onChange={(v) => onChange({ ...data, title: v })} />
       <Textarea label="Description" value={(data.description as string) || ''} onChange={(v) => onChange({ ...data, description: v })} />
       <ImageInput label="Image URL" value={(data.image_url as string) || ''} onChange={(v) => onChange({ ...data, image_url: v })} bucket="banners" />
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <Input label="Primary CTA Text" value={(data.cta_primary_text as string) || ''} onChange={(v) => onChange({ ...data, cta_primary_text: v })} />
         <Input label="Primary CTA Link" value={(data.cta_primary_link as string) || ''} onChange={(v) => onChange({ ...data, cta_primary_link: v })} />
       </div>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <Input label="Secondary CTA Text" value={(data.cta_secondary_text as string) || ''} onChange={(v) => onChange({ ...data, cta_secondary_text: v })} />
         <Input label="Secondary CTA Link" value={(data.cta_secondary_link as string) || ''} onChange={(v) => onChange({ ...data, cta_secondary_link: v })} />
       </div>
@@ -206,7 +206,7 @@ function AboutEditor({ data, onChange }: { data: Record<string, unknown>; onChan
               <span className="text-sm font-medium text-gray-700">Member {i + 1}</span>
               <button onClick={() => removeTeam(i)} className="text-xs text-red-500 hover:text-red-700">Remove</button>
             </div>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <Input label="Name" value={member.name} onChange={(v) => updateTeam(i, 'name', v)} />
               <Input label="Role" value={member.role} onChange={(v) => updateTeam(i, 'role', v)} />
             </div>
@@ -247,7 +247,7 @@ function FeaturedCollectionsEditor({ data, onChange }: { data: Record<string, un
             <span className="text-sm font-medium text-gray-700">Collection {i + 1}</span>
             <button onClick={() => removeItem(i)} className="text-xs text-red-500 hover:text-red-700">Remove</button>
           </div>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <Input label="Name" value={item.name} onChange={(v) => updateItem(i, 'name', v)} placeholder="e.g. Dresses" />
             <Input label="Slug" value={item.slug} onChange={(v) => updateItem(i, 'slug', v)} placeholder="e.g. dresses" />
           </div>
@@ -598,20 +598,22 @@ export default function ContentPage() {
         </div>
       </div>
 
-      <div className="flex gap-1 border-b border-gray-200">
-        {Object.entries(sectionLabels).map(([key, label]) => (
-          <button
-            key={key}
-            onClick={() => switchTab(key)}
-            className={`px-4 py-2.5 text-sm font-medium border-b-2 transition-colors ${
-              activeTab === key
-                ? 'border-[#C9A84C] text-[#C9A84C]'
-                : 'border-transparent text-gray-500 hover:text-gray-700'
-            }`}
-          >
-            {label}
-          </button>
-        ))}
+      <div className="overflow-x-auto border-b border-gray-200">
+        <div className="flex gap-1 min-w-max">
+          {Object.entries(sectionLabels).map(([key, label]) => (
+            <button
+              key={key}
+              onClick={() => switchTab(key)}
+              className={`whitespace-nowrap px-4 py-2.5 text-sm font-medium border-b-2 transition-colors ${
+                activeTab === key
+                  ? 'border-[#C9A84C] text-[#C9A84C]'
+                  : 'border-transparent text-gray-500 hover:text-gray-700'
+              }`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
       </div>
 
       <div className="bg-white border border-gray-200 rounded-lg p-6">

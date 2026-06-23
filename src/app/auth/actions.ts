@@ -8,8 +8,8 @@ import { loginSchema, signupSchema, type LoginInput, type SignupInput } from '@/
 
 // ─── Sign In ────────────────────────────────────────────────────────────────
 
-export async function signInWithEmail(data: LoginInput, redirectTo?: string) {
-  const parsed = loginSchema.safeParse(data);
+export async function signInWithEmail(input: LoginInput, redirectTo?: string) {
+  const parsed = loginSchema.safeParse(input);
   if (!parsed.success) {
     const fieldErrors = parsed.error.flatten().fieldErrors;
     const firstError = Object.values(fieldErrors)[0]?.[0];
@@ -19,13 +19,27 @@ export async function signInWithEmail(data: LoginInput, redirectTo?: string) {
   const supabase = await createClient();
   const { email, password } = parsed.data;
 
-  const { error } = await supabase.auth.signInWithPassword({ email, password });
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 
   if (error) {
     if (error.message.includes('Invalid login credentials')) {
       return { error: 'Invalid email or password' };
     }
     return { error: 'Invalid email or password' };
+  }
+
+  // Block admin accounts from storefront login
+  if (data.user) {
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', data.user.id)
+      .single();
+
+    if (profile?.role === 'admin') {
+      await supabase.auth.signOut();
+      return { error: 'This account has admin privileges. Please use the admin login panel.' };
+    }
   }
 
   revalidatePath('/', 'layout');
@@ -175,13 +189,27 @@ export async function adminSignIn(email: string, password: string) {
     return { error: 'Access denied. This account does not have admin privileges.' };
   }
 
-  // Set isolated admin_session cookie with full session
+  // Set isolated admin_session cookie with full session + email
+  const sessionData = { ...data.session, _admin_email: email };
   const cookieStore = await cookies();
   cookieStore.set(
     'admin_session',
-    JSON.stringify(data.session),
+    JSON.stringify(sessionData),
     {
       httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 60 * 60 * 24 * 7,
+    }
+  );
+
+  // Store admin email separately for settings page display
+  cookieStore.set(
+    'admin_email',
+    email,
+    {
+      httpOnly: false,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
       path: '/',
@@ -206,5 +234,40 @@ export async function adminSignIn(email: string, password: string) {
 export async function adminSignOut() {
   const cookieStore = await cookies();
   cookieStore.delete('admin_session');
+  cookieStore.delete('admin_email');
   return { success: true };
+}
+
+// ─── Update admin email in session cookie ────────────────────────────────────
+
+export async function updateAdminSessionEmail(newEmail: string) {
+  const cookieStore = await cookies();
+  const raw = cookieStore.get('admin_session')?.value;
+  if (!raw) return { error: 'No admin session found' };
+
+  try {
+    const session = JSON.parse(raw);
+    session._admin_email = newEmail;
+    cookieStore.set(
+      'admin_session',
+      JSON.stringify(session),
+      {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        path: '/',
+        maxAge: 60 * 60 * 24 * 7,
+      }
+    );
+    cookieStore.set('admin_email', newEmail, {
+      httpOnly: false,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 60 * 60 * 24 * 7,
+    });
+    return { success: true };
+  } catch {
+    return { error: 'Failed to update session' };
+  }
 }

@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
 import { Package, CheckCircle, Clock, Truck, XCircle, MapPin } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -26,8 +27,10 @@ const statusLabels: Record<string, string> = {
   Cancelled: "This order has been cancelled.",
 };
 
-export default function TrackOrderPage() {
+function TrackOrderContent() {
   const { formatPrice } = useCurrency();
+  const searchParams = useSearchParams();
+  const prefilledOrder = searchParams.get("order") || "";
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
   const [order, setOrder] = React.useState<Record<string, unknown> | null>(null);
@@ -38,6 +41,9 @@ export default function TrackOrderPage() {
     formState: { errors },
   } = useForm<TrackOrderInput>({
     resolver: zodResolver(trackOrderSchema),
+    defaultValues: {
+      orderNumber: prefilledOrder,
+    },
   });
 
   const handleTrack = async (data: TrackOrderInput) => {
@@ -73,7 +79,7 @@ export default function TrackOrderPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
       <div className="w-16 h-0.5 bg-gold mx-auto mb-6" />
-      <h1 className="font-serif text-4xl font-bold text-foreground mb-4 text-center">
+      <h1 className="font-serif text-3xl sm:text-4xl font-bold text-foreground mb-4 text-center">
         Track Your Order
       </h1>
       <p className="text-muted-foreground mb-8 text-center">
@@ -251,5 +257,21 @@ export default function TrackOrderPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function TrackOrderPage() {
+  return (
+    <React.Suspense fallback={
+      <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+        <div className="animate-pulse space-y-4">
+          <div className="h-8 bg-muted rounded w-1/2 mx-auto" />
+          <div className="h-4 bg-muted rounded w-3/4 mx-auto" />
+          <div className="h-48 bg-muted rounded" />
+        </div>
+      </div>
+    }>
+      <TrackOrderContent />
+    </React.Suspense>
   );
 }

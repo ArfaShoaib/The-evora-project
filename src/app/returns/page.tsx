@@ -48,7 +48,7 @@ export default async function ReturnsPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
       <div className="w-16 h-0.5 bg-gold mx-auto mb-6" />
-      <h1 className="font-serif text-4xl font-bold text-foreground mb-8 text-center">
+      <h1 className="font-serif text-3xl sm:text-4xl font-bold text-foreground mb-8 text-center">
         {data.title}
       </h1>
       <p className="text-xs text-muted-foreground mb-8 text-center">Last updated: {data.last_updated}</p>

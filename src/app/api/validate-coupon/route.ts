@@ -3,7 +3,7 @@ import { createClient } from '@/lib/supabase/server';
 
 export async function POST(request: NextRequest) {
   try {
-    const { code, cart_total } = await request.json();
+    const { code, cart_total, customer_email } = await request.json();
 
     if (!code || typeof cart_total !== 'number') {
       return NextResponse.json(
@@ -54,6 +54,19 @@ export async function POST(request: NextRequest) {
 
       if (existingOrder) {
         return NextResponse.json({ valid: false, error: 'You have already used this coupon' });
+      }
+    } else if (customer_email) {
+      const { data: existingOrder } = await supabase
+        .from('orders')
+        .select('id')
+        .eq('customer_email', customer_email)
+        .eq('coupon_code', coupon.code)
+        .neq('status', 'Cancelled')
+        .limit(1)
+        .maybeSingle();
+
+      if (existingOrder) {
+        return NextResponse.json({ valid: false, error: 'This coupon has already been used with this email' });
       }
     }
 

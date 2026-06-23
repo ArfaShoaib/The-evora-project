@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { SectionHeader } from "@/components/ui/SectionHeader";
 
 interface CollectionItem {
   id: string;
@@ -34,14 +35,10 @@ export function FeaturedCollections({ collections, data }: FeaturedCollectionsPr
   return (
     <section className="py-16 lg:py-24 bg-card">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="mb-10 text-center">
-          <h2 className="font-serif text-2xl sm:text-3xl font-bold text-foreground">
-            Featured Collections
-          </h2>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Curated edits for every occasion
-          </p>
-        </div>
+        <SectionHeader
+          title="Featured Collections"
+          subtitle="Curated edits for every occasion"
+        />
 
         <div className="mt-12 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
           {displayItems.map((collection) => (

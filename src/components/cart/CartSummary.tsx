@@ -25,7 +25,7 @@ export function CartSummary({ subtotal, shipping, tax, total, discount }: CartSu
           <span className="text-muted-foreground">Subtotal</span>
           <span className="text-foreground">{formatPrice(subtotal)}</span>
         </div>
-        {discount && discount > 0 && (
+        {discount != null && discount > 0 && (
           <div className="flex justify-between text-gold">
             <span>Discount</span>
             <span>-{formatPrice(discount)}</span>

@@ -47,7 +47,10 @@ export default function CartPage() {
   }, []);
 
   const productIds = React.useMemo(() => items.map((i) => i.productId), [items]);
-  const { products } = useProductsByIds(productIds);
+  const { products, loading } = useProductsByIds(productIds);
+
+  // Still loading if cart has items but products haven't loaded yet
+  const isLoading = loading || (items.length > 0 && products.length === 0);
 
   const cartProducts = items
     .map((item) => {
@@ -71,13 +74,50 @@ export default function CartPage() {
   const tax = Number(((subtotal - couponDiscount) * (taxPercentage / 100)).toFixed(2));
   const total = subtotal - couponDiscount + shippingCost + tax;
 
+  if (isLoading) {
+    return (
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        <div className="h-10 w-48 bg-muted animate-pulse rounded mb-8 sm:mb-12" />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
+          <div className="lg:col-span-2 flex flex-col gap-6">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="flex gap-4 sm:gap-6 py-6 border-b border-border">
+                <div className="size-24 sm:size-32 bg-muted animate-pulse rounded" />
+                <div className="flex-1 flex flex-col gap-3">
+                  <div className="h-4 w-40 bg-muted animate-pulse rounded" />
+                  <div className="h-3 w-24 bg-muted animate-pulse rounded" />
+                  <div className="h-4 w-20 bg-muted animate-pulse rounded" />
+                  <div className="flex gap-2 mt-4">
+                    <div className="size-9 bg-muted animate-pulse rounded" />
+                    <div className="w-10 h-9 bg-muted animate-pulse rounded" />
+                    <div className="size-9 bg-muted animate-pulse rounded" />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="bg-muted/30 p-6 animate-pulse rounded">
+            <div className="h-5 w-32 bg-muted rounded mb-6" />
+            <div className="flex flex-col gap-3">
+              <div className="flex justify-between"><div className="h-4 w-20 bg-muted rounded" /><div className="h-4 w-16 bg-muted rounded" /></div>
+              <div className="flex justify-between"><div className="h-4 w-16 bg-muted rounded" /><div className="h-4 w-12 bg-muted rounded" /></div>
+              <div className="h-px bg-muted my-2" />
+              <div className="flex justify-between"><div className="h-5 w-14 bg-muted rounded" /><div className="h-5 w-20 bg-muted rounded" /></div>
+            </div>
+            <div className="h-13 w-full bg-muted rounded mt-6" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (cartProducts.length === 0) {
     return (
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-24 text-center">
         <div className="size-20 mx-auto mb-6 rounded-full bg-muted flex items-center justify-center">
           <ShoppingBag className="size-10 text-muted-foreground" />
         </div>
-        <h1 className="font-serif text-3xl font-bold text-foreground mb-4">
+        <h1 className="font-serif text-3xl sm:text-4xl font-bold text-foreground mb-4">
           Your bag is empty
         </h1>
         <p className="text-muted-foreground mb-8 max-w-md mx-auto">
